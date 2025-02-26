@@ -20,14 +20,49 @@ const createDeck = () => {
             deck.push(special + type)
         }
     }
-    console.log(deck)
-
     // Barajar las cartas
     deck = _.shuffle(deck)
 
     console.log(deck)
+
+   
+}
+
+createDeck()
+
+const requestCard = ()=>{
+
+    if(deck.length === 0){
+        alert('No quedan cartas en la baraja')
+    }
+        let card = deck.pop()
+       
+        console.log(card)
+
+    console.log(deck)
+
+    return card
+
+}
+
+requestCard()
+
+const cardValue = (card)=>{
+
+    let value = card.substring(0,card.length - 1)
+    
+    return (isNaN(value)) ? 
+            (value === 'A') ? 11 : 10
+            : parseInt(value)
+
+//    if(isNaN(value)){
+//         points = points = (value === 'A') ? 11 : 10
+//    }else{
+//     points = parseInt(value)
+//    }
+
+
 }
 
 
-
-createDeck()
+console.log(cardValue(requestCard()))
