@@ -19,6 +19,10 @@ html,body{
 
 }
 
+#playerCards, iaCards{
+    height: 240px;
+}
+
 #ia_cartas, jugador_cartas{
 height: 240px;
 }

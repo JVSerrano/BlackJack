@@ -6,6 +6,16 @@
 let deck = []
 const types = ['C', 'D', 'H', 'S']
 const specials = ['A', 'J', 'Q', 'K']
+let playerPoints = 0
+let iaPoints = 0
+
+
+let btnLose = document.getElementById('btnLose')
+let markers = document.querySelectorAll('small')
+let divPlayerCards = document.getElementById('playerCards')
+let divIaCards = document.getElementById('iaCards')
+let btnStop = document.getElementById('btnStop')
+
 
 const createDeck = () => {
 
@@ -25,19 +35,19 @@ const createDeck = () => {
 
     console.log(deck)
 
-   
+
 }
 
 createDeck()
 
-const requestCard = ()=>{
+const requestCard = () => {
 
-    if(deck.length === 0){
+    if (deck.length === 0) {
         alert('No quedan cartas en la baraja')
     }
-        let card = deck.pop()
-       
-        console.log(card)
+    let card = deck.pop()
+
+    console.log(card)
 
     console.log(deck)
 
@@ -47,22 +57,79 @@ const requestCard = ()=>{
 
 requestCard()
 
-const cardValue = (card)=>{
+const cardValue = (card) => {
 
-    let value = card.substring(0,card.length - 1)
+    let value = card.substring(0, card.length - 1)
+
+    return (isNaN(value)) ?
+        (value === 'A') ? 11 : 10
+        : parseInt(value)
+
+    //    if(isNaN(value)){
+    //         points = points = (value === 'A') ? 11 : 10
+    //    }else{
+    //     points = parseInt(value)
+    //    }
+
+}
+
+const iaTurn = (minimumPoints) => {
+
+     do {
+
+        let card = requestCard()
+
+        iaPoints += cardValue(card)
     
-    return (isNaN(value)) ? 
-            (value === 'A') ? 11 : 10
-            : parseInt(value)
+        markers[1].innerText = iaPoints
+    
+        const imgCard = document.createElement('img')
+    
+        imgCard.src = `assets/cartas/${card}.png`
+        imgCard.classList.add('card')
+    
+    
+        divIaCards.append(imgCard)
 
-//    if(isNaN(value)){
-//         points = points = (value === 'A') ? 11 : 10
-//    }else{
-//     points = parseInt(value)
-//    }
+        if(minimumPoints > 21){
+            break
+        }
 
+     } while (iaPoints < minimumPoints && minimumPoints <= 21)
 
 }
 
 
-console.log(cardValue(requestCard()))
+btnLose.addEventListener('click', () => {
+
+    let card = requestCard()
+
+    playerPoints += cardValue(card)
+
+    markers[0].innerText = playerPoints
+
+    const imgCard = document.createElement('img')
+
+    imgCard.src = `assets/cartas/${card}.png`
+    imgCard.classList.add('card')
+
+
+    divPlayerCards.append(imgCard)
+
+    if (playerPoints > 21) {
+        console.warn('Jugador perdedor')
+        btnLose.disabled = true
+        iaTurn(playerPoints)
+    } else if (playerPoints === 21) {
+        console.warn('Ganaste campeon')
+    }
+
+})
+
+btnStop.addEventListener('click', ()=>{
+
+    btnStop.disabled = true
+    btnLose.disabled = true
+    iaTurn(playerPoints)
+
+})
