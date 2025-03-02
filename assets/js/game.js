@@ -34,9 +34,6 @@ const createDeck = () => {
     // Barajar las cartas
   return  deck = _.shuffle(deck)
 
-    console.log(deck)
-
-
 }
 
 createDeck()
