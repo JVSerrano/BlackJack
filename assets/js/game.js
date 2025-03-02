@@ -15,6 +15,7 @@ let markers = document.querySelectorAll('small')
 let divPlayerCards = document.getElementById('playerCards')
 let divIaCards = document.getElementById('iaCards')
 let btnStop = document.getElementById('btnStop')
+let btnNew = document.getElementById('btnNew')
 
 
 const createDeck = () => {
@@ -31,7 +32,7 @@ const createDeck = () => {
         }
     }
     // Barajar las cartas
-    deck = _.shuffle(deck)
+  return  deck = _.shuffle(deck)
 
     console.log(deck)
 
@@ -42,9 +43,9 @@ createDeck()
 
 const requestCard = () => {
 
-    if (deck.length === 0) {
-        alert('No quedan cartas en la baraja')
-    }
+    // if (deck.length === 0) {
+    //     alert('No quedan cartas en la baraja')
+    // }
     let card = deck.pop()
 
     console.log(card)
@@ -75,29 +76,53 @@ const cardValue = (card) => {
 
 const iaTurn = (minimumPoints) => {
 
-     do {
+    // debugger
+
+    btnStop.disabled = true
+
+    do {
 
         let card = requestCard()
 
         iaPoints += cardValue(card)
-    
+
         markers[1].innerText = iaPoints
-    
+
         const imgCard = document.createElement('img')
-    
+
         imgCard.src = `assets/cartas/${card}.png`
         imgCard.classList.add('card')
-    
-    
+
+
         divIaCards.append(imgCard)
 
-        if(minimumPoints > 21){
+        if (minimumPoints > 21) {
             break
         }
 
-     } while (iaPoints < minimumPoints && minimumPoints <= 21)
+    } while (iaPoints < minimumPoints && minimumPoints <= 21)
+
+    setTimeout(() => {
+        winnerMessage()
+    }, 300)
 
 }
+
+const winnerMessage = () => {
+
+    if (iaPoints > 21) {
+        alert('El ganador es el JUGADOR')
+    } else if (playerPoints === iaPoints) {
+        alert('Empate')
+    } else if (playerPoints > 21) {
+        alert('El ganador es la IA')
+    } else {
+        alert('El ganador es la IA')
+    }
+
+}
+
+
 
 
 btnLose.addEventListener('click', () => {
@@ -126,10 +151,35 @@ btnLose.addEventListener('click', () => {
 
 })
 
-btnStop.addEventListener('click', ()=>{
+btnStop.addEventListener('click', () => {
 
     btnStop.disabled = true
     btnLose.disabled = true
     iaTurn(playerPoints)
 
 })
+
+btnNew.addEventListener('click', () => {
+
+    console.clear()
+
+    deck = []
+    deck = createDeck()
+
+    playerPoints = 0
+    iaPoints = 0
+
+    markers[0].innerText = 0
+    markers[1].innerText = 0
+
+    divIaCards.innerHTML = ''
+    divPlayerCards.innerHTML = ''
+
+    
+    btnStop.disabled = false
+    btnLose.disabled = false
+
+    console.log(deck)
+})
+
+

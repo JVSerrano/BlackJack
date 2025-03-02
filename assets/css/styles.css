@@ -26,3 +26,11 @@ html,body{
 #ia_cartas, jugador_cartas{
 height: 240px;
 }
+
+@media (max-width:480px){
+    .card{
+        width: 80px;
+    left: 40px;
+    margin-left: -22px;
+    }
+}
